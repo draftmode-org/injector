@@ -1,0 +1,31 @@
+{
+    "name": "singleframe/injector",
+    "version": "0.0.1",
+    "description": "injector",
+    "license": "MIT",
+    "config" : {
+        "vendor-dir" : "plugin"
+    },
+    "authors": [
+        {
+            "name": "Peter Fux",
+            "email": "it@noframework.io"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "psr/container": "1.0.0",
+        "singleframe/log": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "singleframe\\Injector\\" : "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "singleframe\\Test\\Injector\\" : "tests/"
+        }
+    },
+    "minimum-stability": "dev"
+}
