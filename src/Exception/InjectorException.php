@@ -1,5 +1,5 @@
 <?php
-namespace singleframe\Injector\Exception;
+namespace Terrazza\Injector\Exception;
 use Psr\Container\ContainerExceptionInterface;
 use RuntimeException;
 

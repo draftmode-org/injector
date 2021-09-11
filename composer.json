@@ -14,17 +14,16 @@
     ],
     "require": {
         "php": ">=7.4",
-        "psr/container": "1.0.0",
-        "singleframe/log": "*"
+        "psr/container": "1.0.0"
     },
     "autoload": {
         "psr-4": {
-            "singleframe\\Injector\\" : "src"
+            "Terrazza\\Injector\\" : "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "singleframe\\Test\\Injector\\" : "tests/"
+            "Terrazza\\Test\\Injector\\" : "tests/"
         }
     },
     "minimum-stability": "dev"

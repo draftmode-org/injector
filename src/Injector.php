@@ -1,10 +1,10 @@
 <?php
 
-namespace singleframe\Injector;
+namespace Terrazza\Injector;
 
 use ReflectionNamedType;
-use singleframe\Injector\Exception\InjectorException;
-use singleframe\Injector\Exception\InjectorLoadMappingException;
+use Terrazza\Injector\Exception\InjectorException;
+use Terrazza\Injector\Exception\InjectorLoadMappingException;
 use Closure;
 use ReflectionClass;
 use ReflectionException;
@@ -12,7 +12,7 @@ use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
-use singleframe\Log\ILogger;
+use Terrazza\Log\ILogger;
 use Throwable;
 
 class Injector implements IInjector {
@@ -28,11 +28,6 @@ class Injector implements IInjector {
 	private string $classMappingFile;
 
     /**
-     * @var ILogger
-     */
-	private ILogger $logger;
-
-    /**
      * @var array<string, string|callable|array<string, mixed>>|null
      */
 	private ?array $mapping=null;
@@ -40,14 +35,12 @@ class Injector implements IInjector {
     /**
      * Injector constructor.
      * @param string $classMappingFile
-     * @param ILogger $logger
      */
-	public function __construct(string $classMappingFile, ILogger $logger) {
+	public function __construct(string $classMappingFile) {
 		$this->classMappingFile                     = $classMappingFile;
-		$this->logger                               = $logger;
 		//
         $this->push(IInjector::class, $this);
-        $this->push(ILogger::class, $logger);
+        //$this->push(ILogger::class, $logger);
 	}
 
     /**
@@ -83,9 +76,9 @@ class Injector implements IInjector {
 
 	public function __destruct() {}
 
-	public function getLogger() : ILogger {
+	/*public function getLogger() : ILogger {
 	    return $this->logger;
-    }
+    }*/
 
 	public function push(string $className, $argument) : void {
 	    $this->containerCache[$className]           = $argument;
@@ -200,7 +193,6 @@ class Injector implements IInjector {
 				return $classInfo->newInstanceArgs($this->getClassArgs($classInfo, $additionalContext));
 			}
 		} catch (ReflectionException $ex) {
-		    $this->logger->exception($ex);
 			throw new InjectorException("Injector->instantiate(): ReflectionException: ".$ex->getMessage(), $ex->getCode(), $ex);
 		}
 		throw new InjectorException("Injector->instantiate(): class $currentClassName not found");
