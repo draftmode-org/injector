@@ -1,6 +1,6 @@
 {
-    "name": "singleframe/injector",
-    "version": "0.0.1",
+    "name": "terrazza/injector",
+    "version": "1.0.1",
     "description": "injector",
     "license": "MIT",
     "config" : {
