@@ -1,6 +1,7 @@
 {
     "name": "terrazza/injector",
-    "version": "1.0.1",
+    "type" : "library",
+    "version": "1.0.0",
     "description": "injector",
     "license": "MIT",
     "config" : {
@@ -16,14 +17,12 @@
         "php": ">=7.4",
         "psr/container": "1.0.0"
     },
+    "require-dev" : {
+        "phpunit/phpunit": "^9.3"
+    },
     "autoload": {
         "psr-4": {
-            "Terrazza\\Injector\\" : "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Terrazza\\Test\\Injector\\" : "tests/"
+            "Terrazza\\Component\\Injector\\" : "src"
         }
     },
     "minimum-stability": "dev"
