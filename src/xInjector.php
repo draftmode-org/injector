@@ -88,7 +88,6 @@ class xInjector implements IInjector {
      * @param ReflectionFunctionAbstract $method
      * @param array|null $extraMapping
      * @return array
-     * @throws ReflectionException
      */
 	private function getMethodArgs(ReflectionFunctionAbstract $method, array $extraMapping=null): array {
 		$args                                       = [];
@@ -144,7 +143,6 @@ class xInjector implements IInjector {
      * @param ReflectionClass $class
      * @param array $extraMapping
      * @return array
-     * @throws ReflectionException
      */
 	private function getClassArgs(ReflectionClass $class, array $extraMapping = []): array {
 		$constructor                                = $class->getConstructor();
