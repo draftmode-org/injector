@@ -1,16 +1,16 @@
 <?php
-
-namespace Terrazza\Component\Injector\Tests\Examples;
+namespace Terrazza\Component\Injector\Tests\Examples\Native;
+use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryAInterface;
 
 class InjectorUseCaseA implements InjectorUseCaseAInterface {
     private InjectorRepositoryAInterface $repository;
     public function __construct(InjectorRepositoryAInterface $repository) {
         $this->repository = $repository;
-        var_dump(__NAMESPACE__."->__construct()");
+        echo __METHOD__.PHP_EOL;
     }
 
     function handle() : void {
-        var_dump(__NAMESPACE__."->handle()");
+        echo __METHOD__.PHP_EOL;
         $this->repository->handle();
     }
 }

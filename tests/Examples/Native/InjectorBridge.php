@@ -1,23 +1,24 @@
 <?php
+namespace Terrazza\Component\Injector\Tests\Examples\Native;
 
-namespace Terrazza\Component\Injector\Tests\Examples;
-
-class InjectorBridge implements InjectorBridgeInterface {
+class InjectorBridge  {
     private InjectorUseCaseAInterface $useCaseA;
     private InjectorUseCaseBInterface $useCaseB;
     public function __construct(InjectorUseCaseAInterface $useCaseA, InjectorUseCaseBInterface $useCaseB) {
         $this->useCaseA = $useCaseA;
         $this->useCaseB = $useCaseB;
-        var_dump(__NAMESPACE__."->__construct()");
+        echo __METHOD__.PHP_EOL;
     }
 
     function handleA() : void {
-        var_dump(__NAMESPACE__."->handle()A");
+        echo __METHOD__." before ".PHP_EOL;
         $this->useCaseA->handle();
+        echo __METHOD__." after ".PHP_EOL;
     }
 
     function handleB() : void {
-        var_dump(__NAMESPACE__."->handle()B");
+        echo __METHOD__." before ".PHP_EOL;
         $this->useCaseB->handle();
+        echo __METHOD__." after ".PHP_EOL;
     }
 }

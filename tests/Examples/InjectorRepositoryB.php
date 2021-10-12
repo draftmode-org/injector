@@ -4,9 +4,9 @@ namespace Terrazza\Component\Injector\Tests\Examples;
 
 class InjectorRepositoryB implements InjectorRepositoryBInterface {
     public function __construct() {
-        var_dump(__NAMESPACE__."->__construct()");
+        echo __METHOD__.PHP_EOL;
     }
     function handle() : void {
-        var_dump(__NAMESPACE__."->handle()");
+        echo __METHOD__.PHP_EOL;
     }
 }
