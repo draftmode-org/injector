@@ -49,10 +49,13 @@ class InjectorTest extends TestCase {
         $this->assertEquals(InjectorRepositoryA::class, get_class($class));
     }
 
+    /** ---------------------------------------- */
+    /** -------------- EXCEPTIONS -------------- */
+    /** ---------------------------------------- */
     function testExceptionClassMappingFileNotFound() {
         $logger                                     = new LoggerTest();
         $this->expectException(InjectorException::class);
-        $class = (new Injector(
+        (new Injector(
             __DIR__ . "/Examples/di.config.php",
             $logger
         ))->get(Examples\CommandBus\InjectorBridge::class);
