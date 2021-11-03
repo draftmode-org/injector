@@ -1,24 +1,30 @@
 <?php
 namespace Terrazza\Component\Injector\Tests\Examples\Native;
 
+use Psr\Log\LoggerInterface;
+use Terrazza\Component\Injector\Tests\Application\Domain\Model\Payment;
+
 class InjectorBridge  {
+    private LoggerInterface $logger;
     private InjectorUseCaseAInterface $useCaseA;
     private InjectorUseCaseBInterface $useCaseB;
-    public function __construct(InjectorUseCaseAInterface $useCaseA, InjectorUseCaseBInterface $useCaseB) {
+    public function __construct(LoggerInterface $logger,
+                                InjectorUseCaseAInterface $useCaseA,
+                                InjectorUseCaseBInterface $useCaseB) {
         $this->useCaseA = $useCaseA;
         $this->useCaseB = $useCaseB;
-        echo __METHOD__.PHP_EOL;
+        $this->logger   = $logger;
+        $logger         = $logger->withMethod(__METHOD__);
+        $logger->debug("");
     }
 
-    function handleA() : void {
-        echo __METHOD__." before ".PHP_EOL;
-        $this->useCaseA->handle();
-        echo __METHOD__." after ".PHP_EOL;
-    }
-
-    function handleB() : void {
-        echo __METHOD__." before ".PHP_EOL;
-        $this->useCaseB->handle();
-        echo __METHOD__." after ".PHP_EOL;
+    /**
+     * @param float $amount
+     * @return Payment|null
+     */
+    function createPayment(float $amount) :?Payment {
+        $logger         = $this->logger->withMethod(__METHOD__);
+        $logger->debug("");
+        return $this->useCaseA->createPayment($amount);
     }
 }

@@ -1,23 +1,29 @@
 <?php
 namespace Terrazza\Component\Injector\Tests\Examples\CommandBus;
+use Psr\Log\LoggerInterface;
 use Terrazza\Component\Injector\ActionHandlerInterface;
 
 class InjectorBridge {
+    private LoggerInterface $logger;
     private ActionHandlerInterface $actionHandler;
-    public function __construct(ActionHandlerInterface $actionHandler) {
+    public function __construct(LoggerInterface $logger, ActionHandlerInterface $actionHandler) {
         $this->actionHandler = $actionHandler;
-        echo __METHOD__.PHP_EOL;
+        $this->logger   = $logger;
+        $logger         = $logger->withMethod(__METHOD__);
+        $logger->debug("");
     }
 
     function getProduct() : string {
-        echo __METHOD__.PHP_EOL;
-        $action = new ProductGetAction("view");
+        $logger         = $this->logger->withMethod(__METHOD__);
+        $logger->debug("");
+        $action         = new ProductGetAction("view");
         return $this->actionHandler->execute($action);
     }
 
     function saveProduct() : int {
-        echo __METHOD__.PHP_EOL;
-        $action = new ProductSaveAction(12);
+        $logger         = $this->logger->withMethod(__METHOD__);
+        $logger->debug("");
+        $action         = new ProductSaveAction(12);
         return $this->actionHandler->execute($action);
     }
 }

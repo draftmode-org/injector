@@ -13,6 +13,13 @@ use Terrazza\Component\Injector\Exception\InjectorException;
 use Throwable;
 
 class Injector implements InjectorInterface {
+    /**
+     * @var float
+     */
+    private float $runtime;
+    /**
+     * @var LoggerInterface
+     */
     private LoggerInterface $logger;
     /**
      * @var array<string, object>
@@ -40,6 +47,52 @@ class Injector implements InjectorInterface {
         $this->logger                               = $logger;
         // push yourself into containerCache
         $this->push(InjectorInterface::class, $this);
+        // push logger into containerCache
+        $this->push(LoggerInterface::class, $logger);
+    }
+
+    /**
+     * @param class-string<T> $id
+     * @param array|null $arguments
+     * @return T
+     * @template T
+     */
+    public function get($id, array $arguments=null) : object {
+        $runtime_start                              = microtime(true);
+        $logger                                     = $this->logger->withMethod(__METHOD__);
+        if (array_key_exists($id, $this->containerCache)) {
+            $logger->debug("return $id from containerCache", ["line" => __LINE__]);
+            $this->runtime                          = microtime(true) - $runtime_start;
+            return $this->containerCache[$id];
+        } else {
+            $logger->debug("call instantiate for $id", ["line" => __LINE__]);
+            $container                              = $this->instantiate($id, $arguments);
+            $this->push($id, $container);
+            $this->runtime                          = microtime(true) - $runtime_start;
+            return $container;
+        }
+    }
+
+    /**
+     * @param string $id
+     * @return bool
+     */
+    public function has($id): bool {
+        return array_key_exists($id, $this->containerCache) || class_exists($id);
+    }
+
+    /**
+     * @return float
+     */
+    public function getRuntime() : float {
+        return $this->runtime ?: 0;
+    }
+
+    /**
+     * @return int
+     */
+    public function getContainerCacheCount() : int {
+        return count($this->containerCache);
     }
 
     /**
@@ -59,31 +112,6 @@ class Injector implements InjectorInterface {
     private function getTraceKeys() : string {
         $response                                   = join(".",$this->traceKey);
         return strtr($response, [".[" => "["]);
-    }
-
-    /**
-     * @param class-string<T> $id
-     * @param array|null $arguments
-     * @return T
-     * @template T
-     */
-    public function get($id, array $arguments=null) : object {
-        $logger                                     = $this->logger->withMethod(__METHOD__);
-        if (array_key_exists($id, $this->containerCache)) {
-            $logger->debug("get $id from containerCache", ["line" => __LINE__]);
-            return $this->containerCache[$id];
-        } else {
-            $logger->debug("call instantiate for $id", ["line" => __LINE__]);
-            return $this->instantiate($id, $arguments);
-        }
-    }
-
-    /**
-     * @param string $id
-     * @return bool
-     */
-    public function has($id): bool {
-        return array_key_exists($id, $this->containerCache) || class_exists($id);
     }
 
     private function push(string $className, $argument) : void {

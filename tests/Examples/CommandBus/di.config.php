@@ -1,24 +1,27 @@
 <?php
 
+use Psr\Log\LoggerInterface;
 use Terrazza\Component\Injector\ActionHandler\DefaultActionHandler;
-use Terrazza\Component\Injector\ActionHandlerInterface;
-use Terrazza\Component\Injector\Tests\Examples\CommandBus\ProductGetAction;
-use Terrazza\Component\Injector\Tests\Examples\CommandBus\ProductGetActionHandler;
-use Terrazza\Component\Injector\Tests\Examples\CommandBus\ProductSaveAction;
-use Terrazza\Component\Injector\Tests\Examples\CommandBus\ProductSaveActionHandler;
+use Terrazza\Component\Injector\ActionHandlerBuilderInterface;
+use Terrazza\Component\Injector\Tests\Examples\CommandBus\Action\Payment\PaymentCreateActionHandler;
+use Terrazza\Component\Injector\Tests\Examples\CommandBus\Action\PaymentActionHandler;
+use Terrazza\Component\Injector\Tests\Examples\CommandBus\Bridge\Payment\PaymentCreateAction;
 use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryA;
 use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryAInterface;
 use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryB;
 use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryBInterface;
+use Terrazza\Component\Injector\Tests\LoggerTest;
 
 return [
-    ActionHandlerInterface::class => DefaultActionHandler::class,
-    DefaultActionHandler::class => [
-        "actionMapper" => [
-            ProductGetAction::class => ProductGetActionHandler::class,
-            ProductSaveAction::class => ProductSaveActionHandler::class
+    //
+    LoggerInterface::class                  => LoggerTest::class,
+    //
+    ActionHandlerBuilderInterface::class    => DefaultActionHandler::class,
+    PaymentActionHandler::class => [
+        "actionMapper"  => [
+            PaymentCreateAction::class      => PaymentCreateActionHandler::class
         ]
     ],
-    InjectorRepositoryAInterface::class => InjectorRepositoryA::class,
-    InjectorRepositoryBInterface::class => InjectorRepositoryB::class,
+    InjectorRepositoryAInterface::class     => InjectorRepositoryA::class,
+    InjectorRepositoryBInterface::class     => InjectorRepositoryB::class,
 ];

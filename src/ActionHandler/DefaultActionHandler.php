@@ -1,16 +1,17 @@
 <?php
 namespace Terrazza\Component\Injector\ActionHandler;
 
+use Terrazza\Component\Injector\ActionHandlerBuilderInterface;
 use Terrazza\Component\Injector\ActionHandlerInterface;
 use Terrazza\Component\Injector\ActionInterface;
 use Terrazza\Component\Injector\InjectorInterface;
 use Terrazza\Component\Injector\Exception\ActionHandlerException;
 
-class DefaultActionHandler implements ActionHandlerInterface {
+class DefaultActionHandler implements ActionHandlerInterface, ActionHandlerBuilderInterface {
     private array $actionMapper;
     private InjectorInterface $injector;
-    public function __construct(array $actionMapper, InjectorInterface $injector) {
-        $this->actionMapper                         = $actionMapper;
+    public function __construct(InjectorInterface $injector, ?array $actionMapper) {
+        $this->actionMapper                         = $actionMapper ?? [];
         $this->injector                             = $injector;
     }
 
@@ -32,7 +33,24 @@ class DefaultActionHandler implements ActionHandlerInterface {
      * @param ActionInterface<RR> $action
      * @return RR
      */
-    function execute(ActionInterface $action) {
+    public function execute(ActionInterface $action) {
         return $this->getActionHandler($action)->execute($action);
+    }
+
+    /**
+     * @param array $actionMapper
+     * @return ActionHandlerInterface
+     */
+    public function withMapper(array $actionMapper): ActionHandlerInterface {
+        $handler                                    = clone $this;
+        $handler->actionMapper                      = $actionMapper;
+        return $handler;
+    }
+
+    /**
+     * @return array
+     */
+    public function getActionMapper() : array {
+        return $this->actionMapper;
     }
 }

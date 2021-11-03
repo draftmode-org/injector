@@ -1,12 +1,17 @@
 <?php
-
 namespace Terrazza\Component\Injector\Tests\Examples;
+use Psr\Log\LoggerInterface;
 
 class InjectorRepositoryB implements InjectorRepositoryBInterface {
-    public function __construct() {
-        echo __METHOD__.PHP_EOL;
+    private LoggerInterface $logger;
+    public function __construct(LoggerInterface $logger) {
+        $this->logger   = $logger;
+        $logger         = $logger->withMethod(__METHOD__);
+        $logger->debug("");
     }
-    function handle() : void {
-        echo __METHOD__.PHP_EOL;
+
+    public function handle() : void {
+        $logger         = $this->logger->withMethod(__METHOD__);
+        $logger->debug("");
     }
 }

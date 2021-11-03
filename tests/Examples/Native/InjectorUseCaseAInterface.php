@@ -1,7 +1,7 @@
 <?php
-
 namespace Terrazza\Component\Injector\Tests\Examples\Native;
+use Terrazza\Component\Injector\Tests\Application\Domain\Model\Payment;
 
 interface InjectorUseCaseAInterface {
-    function handle() : void;
+    function createPayment(float $amount) : Payment;
 }

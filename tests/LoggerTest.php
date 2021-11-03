@@ -30,13 +30,14 @@ class LoggerTest implements LoggerInterface {
         if (!$this->logLevel || $this->logLevel !== $logLevel) {
             return;
         }
-        $msg                                        = [$logLevel];
+        $msg                                        = [];
         if ($this->namespace) {
             $msg[]                                  = $this->namespace;
         }
         if ($this->method) {
             $msg[]                                  = ($this->namespace ? "->" : "").$this->method."()";
         }
+        $msg[]                                      = $logLevelName;
         if ($context && array_key_exists("line", $context)) {
             $msg[]                                  = "[line: ".$context["line"]."]";
             unset($context["line"]);

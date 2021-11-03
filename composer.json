@@ -28,7 +28,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Terrazza\\Component\\Injector\\Tests\\Examples\\" : "tests\\Examples"
+            "Terrazza\\Component\\Injector\\Tests\\Examples\\" : "tests\\Examples",
+            "Terrazza\\Component\\Injector\\Tests\\Application\\" : "tests\\Application"
         }
     },
     "minimum-stability": "dev"
