@@ -1,8 +1,8 @@
 <?php
-namespace Terrazza\Component\Injector\Tests;
+namespace Terrazza\Component\Injector\Tests\Application;
 use Psr\Log\LoggerInterface;
 
-class LoggerTest implements LoggerInterface {
+class Logger implements LoggerInterface {
     private ?string $namespace                      = null;
     private ?string $method                         = null;
     public function withNamespace(string $namespace) : LoggerInterface {

@@ -10,11 +10,11 @@ use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryA;
 use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryAInterface;
 use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryB;
 use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryBInterface;
-use Terrazza\Component\Injector\Tests\LoggerTest;
+use Terrazza\Component\Injector\Tests\Logger;
 
 return [
     //
-    LoggerInterface::class                  => LoggerTest::class,
+    LoggerInterface::class                  => Logger::class,
     //
     ActionHandlerBuilderInterface::class    => DefaultActionHandler::class,
     PaymentActionHandler::class => [
