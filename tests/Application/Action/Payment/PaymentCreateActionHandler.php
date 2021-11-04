@@ -1,19 +1,18 @@
 <?php
-namespace Terrazza\Component\Injector\Tests\Examples\CommandBus\Action\Payment;
-use Psr\Log\LoggerInterface;
+namespace Terrazza\Component\Injector\Tests\Application\Action\Payment;
 use Terrazza\Component\Injector\ActionHandlerInterface;
 use Terrazza\Component\Injector\ActionInterface;
-use Terrazza\Component\Injector\Tests\Application\Domain\Model\Payment;
-use Terrazza\Component\Injector\Tests\Examples\CommandBus\Bridge\Payment\PaymentCreateAction;
+use Terrazza\Component\Injector\Tests\Application\Domain\Payment\PaymentModel;
 use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryAInterface;
+use Terrazza\Component\Logger\LogInterface;
 
 /**
- * @implements ActionHandlerInterface<PaymentCreateAction>
+ * @implements ActionHandlerInterface<PaymentCreateRequest>
  */
 class PaymentCreateActionHandler implements ActionHandlerInterface {
-    private LoggerInterface $logger;
+    private LogInterface $logger;
     private InjectorRepositoryAInterface $repository;
-    public function __construct(LoggerInterface $logger, InjectorRepositoryAInterface $repository) {
+    public function __construct(LogInterface $logger, InjectorRepositoryAInterface $repository) {
         $this->repository = $repository;
         $this->logger       = $logger;
         $logger             = $logger->withMethod(__METHOD__);
@@ -21,13 +20,13 @@ class PaymentCreateActionHandler implements ActionHandlerInterface {
     }
 
     /**
-     * @param PaymentCreateAction $action
-     * @return Payment|null
+     * @param PaymentCreateRequest $action
+     * @return PaymentModel|null
      */
-    function execute(ActionInterface $action) :?Payment {
+    function execute(ActionInterface $action) :?PaymentModel {
         $logger             = $this->logger->withMethod(__METHOD__);
         $logger->debug("");
-        return Payment::create(
+        return PaymentModel::create(
             date("U"),
             $action->getAmount()
         );

@@ -1,14 +1,15 @@
 <?php
 namespace Terrazza\Component\Injector\Tests\Examples\Native;
 
-use Psr\Log\LoggerInterface;
-use Terrazza\Component\Injector\Tests\Application\Domain\Model\Payment;
+
+use Terrazza\Component\Injector\Tests\Application\Domain\Payment\PaymentModel;
+use Terrazza\Component\Logger\LogInterface;
 
 class InjectorBridge  {
-    private LoggerInterface $logger;
+    private LogInterface $logger;
     private InjectorUseCaseAInterface $useCaseA;
     private InjectorUseCaseBInterface $useCaseB;
-    public function __construct(LoggerInterface $logger,
+    public function __construct(LogInterface              $logger,
                                 InjectorUseCaseAInterface $useCaseA,
                                 InjectorUseCaseBInterface $useCaseB) {
         $this->useCaseA = $useCaseA;
@@ -20,9 +21,9 @@ class InjectorBridge  {
 
     /**
      * @param float $amount
-     * @return Payment|null
+     * @return PaymentModel|null
      */
-    function createPayment(float $amount) :?Payment {
+    function createPayment(float $amount) :?PaymentModel {
         $logger         = $this->logger->withMethod(__METHOD__);
         $logger->debug("");
         return $this->useCaseA->createPayment($amount);

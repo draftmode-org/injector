@@ -1,9 +1,9 @@
 <?php
-namespace Terrazza\Component\Injector\Tests\Application\Domain\Model;
+namespace Terrazza\Component\Injector\Tests\Application\Domain\Payment;
 
 use DateTime;
 
-class Payment {
+class PaymentModel {
     private int $id;
     private DateTime $created;
     private float $amount;

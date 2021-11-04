@@ -1,19 +1,29 @@
 <?php
 namespace Terrazza\Component\Injector\Tests;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use Terrazza\Component\Injector\Exception\InjectorException;
 use Terrazza\Component\Injector\Injector;
 use Terrazza\Component\Injector\InjectorInterface;
-use Terrazza\Component\Injector\Tests\Application\Logger;
+use Terrazza\Component\Injector\Tests\Application\Bridge\PaymentBridge;
 use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryA;
 use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryAInterface;
+use Terrazza\Component\Logger\Formatter\LineFormatter;
+use Terrazza\Component\Logger\Handler\NoHandler;
+use Terrazza\Component\Logger\Handler\StreamHandler;
+use Terrazza\Component\Logger\Log;
+use Terrazza\Component\Logger\LogInterface;
 
 class InjectorTest extends TestCase {
-    protected function getLogger(int $logLevel=null) : LoggerInterface {
-        return new Logger($logLevel);
+    protected function getLogger(int $logLevel=null) : LogInterface {
+        $handler = $logLevel ?
+            new StreamHandler(
+                $logLevel,
+                new LineFormatter(),
+                "php://stdout"
+            ) : new NoHandler();
+        return new Log("InjectorTest", $handler);
     }
-    protected function getInjector($classMapping, LoggerInterface $logger) : InjectorInterface {
+    protected function getInjector($classMapping, LogInterface $logger) : InjectorInterface {
         return (new Injector(
             $classMapping,
             $logger
@@ -35,7 +45,7 @@ class InjectorTest extends TestCase {
         echo PHP_EOL.__METHOD__.PHP_EOL;
         $logger         = $this->getLogger();
         $injector       = $this->getInjector(__DIR__ . "/Examples/CommandBus/di.config.php", $logger);
-        $bridge         = $injector->get(Examples\CommandBus\Bridge\PaymentBridge::class);
+        $bridge         = $injector->get(PaymentBridge::class);
         echo "...runtime:".round($injector->getRuntime(), 3).PHP_EOL;
         echo "...count:".$injector->getContainerCacheCount().PHP_EOL;
         $payment        = $bridge->createPayment($amount = 12.3);

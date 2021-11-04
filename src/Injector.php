@@ -3,13 +3,13 @@
 namespace Terrazza\Component\Injector;
 
 use Closure;
-use Psr\Log\LoggerInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionFunction;
 use ReflectionFunctionAbstract;
 use ReflectionNamedType;
 use Terrazza\Component\Injector\Exception\InjectorException;
+use Terrazza\Component\Logger\LogInterface;
 use Throwable;
 
 class Injector implements InjectorInterface {
@@ -18,9 +18,9 @@ class Injector implements InjectorInterface {
      */
     private float $runtime;
     /**
-     * @var LoggerInterface
+     * @var LogInterface
      */
-    private LoggerInterface $logger;
+    private LogInterface $logger;
     /**
      * @var array<string, object>
      */
@@ -40,15 +40,15 @@ class Injector implements InjectorInterface {
 
     /**
      * @param string|array $classMapping
-     * @param LoggerInterface $logger
+     * @param LogInterface $logger
      */
-    public function __construct($classMapping, LoggerInterface $logger) {
+    public function __construct($classMapping, LogInterface $logger) {
         $this->classMapping                         = $classMapping;
         $this->logger                               = $logger;
         // push yourself into containerCache
         $this->push(InjectorInterface::class, $this);
         // push logger into containerCache
-        $this->push(LoggerInterface::class, $logger);
+        $this->push(LogInterface::class, $logger);
     }
 
     /**

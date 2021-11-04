@@ -2,13 +2,13 @@
 
 namespace Terrazza\Component\Injector\Tests\Examples\Native;
 
-use Psr\Log\LoggerInterface;
 use Terrazza\Component\Injector\Tests\Examples\InjectorRepositoryBInterface;
+use Terrazza\Component\Logger\LogInterface;
 
 class InjectorUseCaseB implements InjectorUseCaseBInterface {
-    private LoggerInterface $logger;
+    private LogInterface $logger;
     private InjectorRepositoryBInterface $repository;
-    public function __construct(LoggerInterface $logger, InjectorRepositoryBInterface $repository) {
+    public function __construct(LogInterface $logger, InjectorRepositoryBInterface $repository) {
         $this->repository   = $repository;
         $this->logger       = $logger;
         $logger             = $logger->withMethod(__METHOD__);

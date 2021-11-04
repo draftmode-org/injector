@@ -1,10 +1,10 @@
 <?php
 namespace Terrazza\Component\Injector\Tests\Examples;
-use Psr\Log\LoggerInterface;
+use Terrazza\Component\Logger\LogInterface;
 
 class InjectorRepositoryB implements InjectorRepositoryBInterface {
-    private LoggerInterface $logger;
-    public function __construct(LoggerInterface $logger) {
+    private LogInterface $logger;
+    public function __construct(LogInterface $logger) {
         $this->logger   = $logger;
         $logger         = $logger->withMethod(__METHOD__);
         $logger->debug("");
