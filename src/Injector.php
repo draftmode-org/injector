@@ -72,6 +72,15 @@ class Injector implements InjectorInterface {
     }
 
     /**
+     * @param object $class
+     * @param array $arguments
+     * @return array
+     */
+    public function getArguments(object $class, array $arguments) : array {
+        return $arguments;
+    }
+
+    /**
      * @param string $id
      * @return bool
      */
@@ -117,7 +126,7 @@ class Injector implements InjectorInterface {
     }
 
     private function instantiate(string $className, array $arguments=null): object {
-        $this->logger->debug($className, ["line" => __LINE__, "method" => __METHOD__, "arguments" => $arguments]);
+        $this->logger->debug($className . ($arguments ? " with arguments" : " without arguments"), ["line" => __LINE__, "method" => __METHOD__, "arguments" => $arguments]);
         $additionalContext                          = $arguments ?? [];
         $currentClassName                           = $className;
         try {
@@ -134,7 +143,11 @@ class Injector implements InjectorInterface {
                 }
                 elseif (is_array($mappingInfo)) {
                     $this->logger->debug(".mappingInfo.isArray", ["line" => __LINE__, "method" => __METHOD__]);
-                    $additionalContext              = $mappingInfo;
+                    if (is_array($arguments) && count($arguments)) {
+                        $additionalContext          = array_filter($mappingInfo + $arguments);
+                    } else {
+                        $additionalContext          = $mappingInfo;
+                    }
                 }
                 elseif (is_string($mappingInfo)) {
                     $this->logger->debug(".mappingInfo.isString:$mappingInfo", ["line" => __LINE__, "method" => __METHOD__]);
@@ -143,6 +156,10 @@ class Injector implements InjectorInterface {
                 }
             } while($redo);
 
+            /*if (!class_exists($currentClassName, false)) {
+                var_dump(error_get_last());
+                throw new InjectorException("hallo:".$currentClassName);
+            }*/
             if (class_exists($currentClassName)) {
                 $this->logger->debug("$currentClassName class exists", ["line" => __LINE__, "method" => __METHOD__]);
                 $classInfo                          = new ReflectionClass($currentClassName);
